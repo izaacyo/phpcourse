@@ -8,6 +8,10 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 var_dump($_SERVER);
 echo '</pre>';*/
 
+echo '<pre>';
+var_dump($_FILES);
+echo '</pre>';
+
 $errors = [];
 
 $title = '';
@@ -38,14 +42,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                ");
                */
 
+    if (!is_dir('images')) {
+        mkdir('images');
+    };
+
     if (empty($errors)) {
+
+        $image = $_FILES['image'] ?? null;
+        $imagePath = '';
+        if ($image) {
+
+            $imagePath = 'images/' . randomString(8) . '/' . $image['name'];
+
+            mkdir(dirname($imagePath));
+
+            move_uploaded_file($image['tmp_name'], $imagePath);
+        }
+
 
         $statement = $pdo->prepare("INSERT INTO products (title, image, description, price, create_date)
 
               VALUES(:title, :image, :description, :price, :date) ");
 
         $statement->bindValue(':title', $title);
-        $statement->bindValue(':image', '');
+        $statement->bindValue(':image', $imagePath);
         $statement->bindValue(':description', $description);
         $statement->bindValue(':price', $price);
         $statement->bindValue(':date', $date);
@@ -56,6 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 /*cho '<pre>';
 var_dump($_POST);
 echo '</pre>';*/
+
+function randomString($n)
+{
+    $characters = '0213456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $str = '';
+    for ($i = 0; $i < $n; $i++) {
+        $index = rand(0, strlen($characters) - 1);
+        $str .= $characters[$index];
+    }
+
+    return $str;
+}
 
 ?>
 
@@ -94,7 +126,7 @@ echo '</pre>';*/
     <?php endif; ?>
 
 
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label>Product Image</label>
             <input type="file" name="image">
