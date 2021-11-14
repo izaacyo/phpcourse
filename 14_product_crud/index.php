@@ -57,7 +57,7 @@ echo '</pre>';*/
                 <tr>
                     <th scope="row"><?php echo $i + 1 ?> </th>
                     <td>
-                        <img src="<?php echo $product['image'] ?>" class="thumb-image">
+                        <img src="<?php echo $product['image'] ?>" class=>
                     </td>
 
                     <td><?php echo $product['title'] ?> </td>
@@ -65,7 +65,13 @@ echo '</pre>';*/
                     <td><?php echo $product['create_date'] ?> </td>
                     <td>
                         <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+
+                        <form style="display: inline-block" method="post" action="delete.php">
+                            <input type="hidden" name="id" value="<?php echo $product['id'] ?>">
+
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+
+                        </form>
 
                     </td>
 
