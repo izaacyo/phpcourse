@@ -56,7 +56,10 @@ echo '</pre>';*/
             <?php foreach ($products as $i => $product) : ?>
                 <tr>
                     <th scope="row"><?php echo $i + 1 ?> </th>
-                    <td> </td>
+                    <td>
+                        <img src="<?php echo $product['image'] ?>" class="thumb-image">
+                    </td>
+
                     <td><?php echo $product['title'] ?> </td>
                     <td><?php echo $product['price'] ?> </td>
                     <td><?php echo $product['create_date'] ?> </td>

@@ -6,11 +6,11 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 /*echo '<pre>';
 var_dump($_SERVER);
-echo '</pre>';*/
+echo '</pre>';
 
 echo '<pre>';
 var_dump($_FILES);
-echo '</pre>';
+echo '</pre>';*/
 
 $errors = [];
 
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $image = $_FILES['image'] ?? null;
         $imagePath = '';
-        if ($image) {
+        if ($image && $image['tmp_name']) {
 
             $imagePath = 'images/' . randomString(8) . '/' . $image['name'];
 
@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->bindValue(':price', $price);
         $statement->bindValue(':date', $date);
         $statement->execute();
+        header('Location: index.php');
     }
 }
 
